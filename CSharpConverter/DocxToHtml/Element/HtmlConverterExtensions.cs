@@ -1,0 +1,23 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: DocxToHtml.Element.HtmlConverterExtensions
+// Assembly: DocxToHtml, Version=1.0.4.0, Culture=neutral, PublicKeyToken=null
+// MVID: 969B072E-3738-40E8-B5EB-6A3CF899FBEA
+// Assembly location: C:\Users\Abbosbek\.nuget\packages\docxtohtml\1.0.4\lib\netstandard2.0\DocxToHtml.dll
+
+using System.Collections.Generic;
+
+namespace CSharpConverter.DocxToHtml.Element
+{
+  public static class HtmlConverterExtensions
+  {
+    public static void AddIfMissing(
+      this Dictionary<string, string> style,
+      string propName,
+      string value)
+    {
+      if (style.ContainsKey(propName))
+        return;
+      style.Add(propName, value);
+    }
+  }
+}

@@ -1,0 +1,141 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: DocxToHtml.Element.M
+// Assembly: DocxToHtml, Version=1.0.4.0, Culture=neutral, PublicKeyToken=null
+// MVID: 969B072E-3738-40E8-B5EB-6A3CF899FBEA
+// Assembly location: C:\Users\Abbosbek\.nuget\packages\docxtohtml\1.0.4\lib\netstandard2.0\DocxToHtml.dll
+
+using System.Xml.Linq;
+
+namespace CSharpConverter.DocxToHtml.Element
+{
+  public static class M
+  {
+    public static readonly XNamespace m = (XNamespace) "http://schemas.openxmlformats.org/officeDocument/2006/math";
+    public static readonly XName acc = M.m + nameof (acc);
+    public static readonly XName accPr = M.m + nameof (accPr);
+    public static readonly XName aln = M.m + nameof (aln);
+    public static readonly XName alnAt = M.m + nameof (alnAt);
+    public static readonly XName alnScr = M.m + nameof (alnScr);
+    public static readonly XName argPr = M.m + nameof (argPr);
+    public static readonly XName argSz = M.m + nameof (argSz);
+    public static readonly XName bar = M.m + nameof (bar);
+    public static readonly XName barPr = M.m + nameof (barPr);
+    public static readonly XName baseJc = M.m + nameof (baseJc);
+    public static readonly XName begChr = M.m + nameof (begChr);
+    public static readonly XName borderBox = M.m + nameof (borderBox);
+    public static readonly XName borderBoxPr = M.m + nameof (borderBoxPr);
+    public static readonly XName box = M.m + nameof (box);
+    public static readonly XName boxPr = M.m + nameof (boxPr);
+    public static readonly XName brk = M.m + nameof (brk);
+    public static readonly XName brkBin = M.m + nameof (brkBin);
+    public static readonly XName brkBinSub = M.m + nameof (brkBinSub);
+    public static readonly XName cGp = M.m + nameof (cGp);
+    public static readonly XName cGpRule = M.m + nameof (cGpRule);
+    public static readonly XName chr = M.m + nameof (chr);
+    public static readonly XName count = M.m + nameof (count);
+    public static readonly XName cSp = M.m + nameof (cSp);
+    public static readonly XName ctrlPr = M.m + nameof (ctrlPr);
+    public static readonly XName d = M.m + nameof (d);
+    public static readonly XName defJc = M.m + nameof (defJc);
+    public static readonly XName deg = M.m + nameof (deg);
+    public static readonly XName degHide = M.m + nameof (degHide);
+    public static readonly XName den = M.m + nameof (den);
+    public static readonly XName diff = M.m + nameof (diff);
+    public static readonly XName dispDef = M.m + nameof (dispDef);
+    public static readonly XName dPr = M.m + nameof (dPr);
+    public static readonly XName e = M.m + nameof (e);
+    public static readonly XName endChr = M.m + nameof (endChr);
+    public static readonly XName eqArr = M.m + nameof (eqArr);
+    public static readonly XName eqArrPr = M.m + nameof (eqArrPr);
+    public static readonly XName f = M.m + nameof (f);
+    public static readonly XName fName = M.m + nameof (fName);
+    public static readonly XName fPr = M.m + nameof (fPr);
+    public static readonly XName func = M.m + nameof (func);
+    public static readonly XName funcPr = M.m + nameof (funcPr);
+    public static readonly XName groupChr = M.m + nameof (groupChr);
+    public static readonly XName groupChrPr = M.m + nameof (groupChrPr);
+    public static readonly XName grow = M.m + nameof (grow);
+    public static readonly XName hideBot = M.m + nameof (hideBot);
+    public static readonly XName hideLeft = M.m + nameof (hideLeft);
+    public static readonly XName hideRight = M.m + nameof (hideRight);
+    public static readonly XName hideTop = M.m + nameof (hideTop);
+    public static readonly XName interSp = M.m + nameof (interSp);
+    public static readonly XName intLim = M.m + nameof (intLim);
+    public static readonly XName intraSp = M.m + nameof (intraSp);
+    public static readonly XName jc = M.m + nameof (jc);
+    public static readonly XName lim = M.m + nameof (lim);
+    public static readonly XName limLoc = M.m + nameof (limLoc);
+    public static readonly XName limLow = M.m + nameof (limLow);
+    public static readonly XName limLowPr = M.m + nameof (limLowPr);
+    public static readonly XName limUpp = M.m + nameof (limUpp);
+    public static readonly XName limUppPr = M.m + nameof (limUppPr);
+    public static readonly XName lit = M.m + nameof (lit);
+    public static readonly XName lMargin = M.m + nameof (lMargin);
+    public static readonly XName _m = M.m + nameof (m);
+    public static readonly XName mathFont = M.m + nameof (mathFont);
+    public static readonly XName mathPr = M.m + nameof (mathPr);
+    public static readonly XName maxDist = M.m + nameof (maxDist);
+    public static readonly XName mc = M.m + nameof (mc);
+    public static readonly XName mcJc = M.m + nameof (mcJc);
+    public static readonly XName mcPr = M.m + nameof (mcPr);
+    public static readonly XName mcs = M.m + nameof (mcs);
+    public static readonly XName mPr = M.m + nameof (mPr);
+    public static readonly XName mr = M.m + nameof (mr);
+    public static readonly XName nary = M.m + nameof (nary);
+    public static readonly XName naryLim = M.m + nameof (naryLim);
+    public static readonly XName naryPr = M.m + nameof (naryPr);
+    public static readonly XName noBreak = M.m + nameof (noBreak);
+    public static readonly XName nor = M.m + nameof (nor);
+    public static readonly XName num = M.m + nameof (num);
+    public static readonly XName objDist = M.m + nameof (objDist);
+    public static readonly XName oMath = M.m + nameof (oMath);
+    public static readonly XName oMathPara = M.m + nameof (oMathPara);
+    public static readonly XName oMathParaPr = M.m + nameof (oMathParaPr);
+    public static readonly XName opEmu = M.m + nameof (opEmu);
+    public static readonly XName phant = M.m + nameof (phant);
+    public static readonly XName phantPr = M.m + nameof (phantPr);
+    public static readonly XName plcHide = M.m + nameof (plcHide);
+    public static readonly XName pos = M.m + nameof (pos);
+    public static readonly XName postSp = M.m + nameof (postSp);
+    public static readonly XName preSp = M.m + nameof (preSp);
+    public static readonly XName r = M.m + nameof (r);
+    public static readonly XName rad = M.m + nameof (rad);
+    public static readonly XName radPr = M.m + nameof (radPr);
+    public static readonly XName rMargin = M.m + nameof (rMargin);
+    public static readonly XName rPr = M.m + nameof (rPr);
+    public static readonly XName rSp = M.m + nameof (rSp);
+    public static readonly XName rSpRule = M.m + nameof (rSpRule);
+    public static readonly XName scr = M.m + nameof (scr);
+    public static readonly XName sepChr = M.m + nameof (sepChr);
+    public static readonly XName show = M.m + nameof (show);
+    public static readonly XName shp = M.m + nameof (shp);
+    public static readonly XName smallFrac = M.m + nameof (smallFrac);
+    public static readonly XName sPre = M.m + nameof (sPre);
+    public static readonly XName sPrePr = M.m + nameof (sPrePr);
+    public static readonly XName sSub = M.m + nameof (sSub);
+    public static readonly XName sSubPr = M.m + nameof (sSubPr);
+    public static readonly XName sSubSup = M.m + nameof (sSubSup);
+    public static readonly XName sSubSupPr = M.m + nameof (sSubSupPr);
+    public static readonly XName sSup = M.m + nameof (sSup);
+    public static readonly XName sSupPr = M.m + nameof (sSupPr);
+    public static readonly XName strikeBLTR = M.m + nameof (strikeBLTR);
+    public static readonly XName strikeH = M.m + nameof (strikeH);
+    public static readonly XName strikeTLBR = M.m + nameof (strikeTLBR);
+    public static readonly XName strikeV = M.m + nameof (strikeV);
+    public static readonly XName sty = M.m + nameof (sty);
+    public static readonly XName sub = M.m + nameof (sub);
+    public static readonly XName subHide = M.m + nameof (subHide);
+    public static readonly XName sup = M.m + nameof (sup);
+    public static readonly XName supHide = M.m + nameof (supHide);
+    public static readonly XName t = M.m + nameof (t);
+    public static readonly XName transp = M.m + nameof (transp);
+    public static readonly XName type = M.m + nameof (type);
+    public static readonly XName val = M.m + nameof (val);
+    public static readonly XName vertJc = M.m + nameof (vertJc);
+    public static readonly XName wrapIndent = M.m + nameof (wrapIndent);
+    public static readonly XName wrapRight = M.m + nameof (wrapRight);
+    public static readonly XName zeroAsc = M.m + nameof (zeroAsc);
+    public static readonly XName zeroDesc = M.m + nameof (zeroDesc);
+    public static readonly XName zeroWid = M.m + nameof (zeroWid);
+  }
+}
