@@ -4,6 +4,13 @@
 	  <TargetFrameworks>net472;net48;netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
 	  <LangVersion>latest</LangVersion>
 	  <Nullable>enable</Nullable>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Description>Simple document converter with 100% C#.</Description>
+	  <PackageProjectUrl>https://github.com/Abbossbek/CSharpConverter</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/Abbossbek/CSharpConverter</RepositoryUrl>
+	  <PackageTags> docx-to-pdf docx-to-html html-to-pdf</PackageTags>
+	  <PackageReleaseNotes>first release</PackageReleaseNotes>
+	  <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

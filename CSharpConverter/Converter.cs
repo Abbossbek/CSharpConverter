@@ -39,7 +39,9 @@ namespace CSharpConverter
             {
                 PageSize pageSize = wordDoc.MainDocumentPart?.Document?.Body?.GetFirstChild<SectionProperties>()?.GetFirstChild<PageSize>();
                 var html = DocxToHtml(wordDoc);
-                PdfDocument pdf = PdfGenerator.GeneratePdf(html, pageSize.Width/20, pageSize.Height/20);
+                PdfDocument pdf = pageSize == null ?
+                    PdfGenerator.GeneratePdf(html, PdfSharpCore.PageSize.A4)
+                    : PdfGenerator.GeneratePdf(html, pageSize.Width / 20, pageSize.Height / 20);
                 pdf.Save(pdfStream);
                 return pdfStream.ToArray();
             }
@@ -51,7 +53,7 @@ namespace CSharpConverter
             int imageCounter = 0;
             WmlToHtmlConverterSettings htmlConverterSettings = new WmlToHtmlConverterSettings()
             {
-                AdditionalCss = $"body {{ max-width: {595}; padding: 0; }}",
+                AdditionalCss = $"body {{ max-width: 100%; padding: 0; }}",
                 PageTitle = str1,
                 FabricateCssClasses = true,
                 CssClassPrefix = "pt-",
