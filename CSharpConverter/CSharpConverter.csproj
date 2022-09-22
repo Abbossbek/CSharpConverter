@@ -8,9 +8,9 @@
 	  <Description>Simple document converter with 100% C#.</Description>
 	  <PackageProjectUrl>https://github.com/Abbossbek/CSharpConverter</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/Abbossbek/CSharpConverter</RepositoryUrl>
-	  <PackageTags> docx-to-pdf docx-to-html html-to-pdf</PackageTags>
-	  <PackageReleaseNotes>first release</PackageReleaseNotes>
-	  <Version>1.0.1</Version>
+	  <PackageTags> docx html pdf convert  docx-to-pdf docx-to-html html-to-pdf</PackageTags>
+	  <PackageReleaseNotes></PackageReleaseNotes>
+	  <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
