@@ -8,10 +8,11 @@ using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 using CSharpConverter.DocxToHtml.Element;
-using CSharpConverter.Pdf;
 
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+
+using HtmlRendererCore.PdfSharp;
 
 using PdfSharpCore.Pdf;
 
@@ -38,11 +39,13 @@ namespace CSharpConverter
             using (MemoryStream pdfStream = new MemoryStream())
             {
                 PageSize pageSize = wordDoc.MainDocumentPart?.Document?.Body?.GetFirstChild<SectionProperties>()?.GetFirstChild<PageSize>();
+
+                var settings = new WmlToHtmlConverterSettings();
                 var html = DocxToHtml(wordDoc);
                 PdfDocument pdf = pageSize == null ?
                     PdfGenerator.GeneratePdf(html, PdfSharpCore.PageSize.A4)
                     : PdfGenerator.GeneratePdf(html, pageSize.Width / 20, pageSize.Height / 20);
-                pdf.Save(pdfStream);
+                 pdf.Save(pdfStream);
                 return pdfStream.ToArray();
             }
         }
@@ -112,7 +115,7 @@ namespace CSharpConverter
             {
           (object) new XDocumentType("html", (string) null, (string) null, (string) null),
           (object) WmlToHtmlConverter.ConvertToHtml(wordDoc, htmlConverterSettings)
-            }).ToString(SaveOptions.DisableFormatting);
+            }).ToString(SaveOptions.None);
         }
         public static string DocxToHtml(string inputFilePath)
         {

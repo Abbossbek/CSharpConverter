@@ -1,95 +1,138 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.PdfGenerateConfig
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
+﻿// "Therefore those skilled at the unorthodox
 using PdfSharpCore;
 using PdfSharpCore.Drawing;
 
-namespace CSharpConverter.Pdf
+namespace HtmlRendererCore.PdfSharp
 {
-  public sealed class PdfGenerateConfig
-  {
-    private PageSize _pageSize;
-    private XSize _xsize;
-    private PageOrientation _pageOrientation;
-    private int _marginTop;
-    private int _marginBottom;
-    private int _marginLeft;
-    private int _marginRight;
-
-    public PageSize PageSize
+    /// <summary>
+    /// The settings for generating PDF using <see cref="PdfGenerator"/>
+    /// </summary>
+    public sealed class PdfGenerateConfig
     {
-      get => this._pageSize;
-      set => this._pageSize = value;
+        #region Fields/Consts
+
+        /// <summary>
+        /// the top margin between the page start and the text
+        /// </summary>
+        private int _marginTop;
+
+        /// <summary>
+        /// the bottom margin between the page end and the text
+        /// </summary>
+        private int _marginBottom;
+
+        /// <summary>
+        /// the left margin between the page start and the text
+        /// </summary>
+        private int _marginLeft;
+
+        /// <summary>
+        /// the right margin between the page end and the text
+        /// </summary>
+        private int _marginRight;
+
+        #endregion
+
+
+        /// <summary>
+        /// the page size to use for each page in the generated pdf
+        /// </summary>
+        public PageSize PageSize { get; set; }
+
+        /// <summary>
+        /// if the page size is undefined this allow you to set manually the page size
+        /// </summary>
+        public XSize ManualPageSize { get; set; }
+
+        /// <summary>
+        /// the orientation of each page of the generated pdf
+        /// </summary>
+        public PageOrientation PageOrientation { get; set; }
+
+        /// <summary>
+        /// the top margin between the page start and the text
+        /// </summary>
+        public int MarginTop
+        {
+            get { return _marginTop; }
+            set
+            {
+                if (value > -1)
+                    _marginTop = value;
+            }
+        }
+
+        /// <summary>
+        /// the bottom margin between the page end and the text
+        /// </summary>
+        public int MarginBottom
+        {
+            get { return _marginBottom; }
+            set
+            {
+                if (value > -1)
+                    _marginBottom = value;
+            }
+        }
+
+        /// <summary>
+        /// the left margin between the page start and the text
+        /// </summary>
+        public int MarginLeft
+        {
+            get { return _marginLeft; }
+            set
+            {
+                if (value > -1)
+                    _marginLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// the right margin between the page end and the text
+        /// </summary>
+        public int MarginRight
+        {
+            get { return _marginRight; }
+            set
+            {
+                if (value > -1)
+                    _marginRight = value;
+            }
+        }
+
+        /// <summary>
+        /// Set all 4 margins to the given value.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetMargins(int value)
+        {
+            if (value > -1)
+                _marginBottom = _marginLeft = _marginTop = _marginRight = value;
+        }
+
+        // The international definitions are:
+        //   1 inch == 25.4 mm
+        //   1 inch == 72 point
+
+        /// <summary>
+        /// Convert the units passed in milimiters to the units used in PdfSharp
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static XSize MilimitersToUnits(double width, double height) {
+            return new XSize(width / 25.4 * 72, height / 25.4 * 72);
+        }
+
+        /// <summary>
+        /// Convert the units passed in inches to the units used in PdfSharp
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static XSize InchesToUnits(double width, double height) {
+            return new XSize(width * 72, height * 72);
+        }
     }
-
-    public XSize ManualPageSize
-    {
-      get => this._xsize;
-      set => this._xsize = value;
-    }
-
-    public PageOrientation PageOrientation
-    {
-      get => this._pageOrientation;
-      set => this._pageOrientation = value;
-    }
-
-    public int MarginTop
-    {
-      get => this._marginTop;
-      set
-      {
-        if (value <= -1)
-          return;
-        this._marginTop = value;
-      }
-    }
-
-    public int MarginBottom
-    {
-      get => this._marginBottom;
-      set
-      {
-        if (value <= -1)
-          return;
-        this._marginBottom = value;
-      }
-    }
-
-    public int MarginLeft
-    {
-      get => this._marginLeft;
-      set
-      {
-        if (value <= -1)
-          return;
-        this._marginLeft = value;
-      }
-    }
-
-    public int MarginRight
-    {
-      get => this._marginRight;
-      set
-      {
-        if (value <= -1)
-          return;
-        this._marginRight = value;
-      }
-    }
-
-    public void SetMargins(int value)
-    {
-      if (value <= -1)
-        return;
-      this._marginBottom = this._marginLeft = this._marginTop = this._marginRight = value;
-    }
-
-    public static XSize MilimitersToUnits(double width, double height) => new XSize(width / 25.4 * 72.0, height / 25.4 * 72.0);
-
-    public static XSize InchesToUnits(double width, double height) => new XSize(width * 72.0, height * 72.0);
-  }
 }

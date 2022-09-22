@@ -1,21 +1,37 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.Adapters.FontFamilyAdapter
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
+﻿using HtmlRendererCore.Adapters;
 using PdfSharpCore.Drawing;
-using TheArtOfDev.HtmlRenderer.Adapters;
 
-namespace CSharpConverter.Pdf.Adapters
+namespace HtmlRendererCore.PdfSharp.Adapters
 {
-  internal sealed class FontFamilyAdapter : IRFontFamily
-  {
-    private readonly XFontFamily _fontFamily;
+    /// <summary>
+    /// Adapter for WinForms Font object for core.
+    /// </summary>
+    internal sealed class FontFamilyAdapter : RFontFamily
+    {
+        /// <summary>
+        /// the underline win-forms font.
+        /// </summary>
+        private readonly XFontFamily _fontFamily;
 
-    public FontFamilyAdapter(XFontFamily fontFamily) => this._fontFamily = fontFamily;
+        /// <summary>
+        /// Init.
+        /// </summary>
+        public FontFamilyAdapter(XFontFamily fontFamily)
+        {
+            _fontFamily = fontFamily;
+        }
 
-    public XFontFamily FontFamily => this._fontFamily;
-        public  string FontName => this._fontFamily.Name;
+        /// <summary>
+        /// the underline win-forms font family.
+        /// </summary>
+        public XFontFamily FontFamily
+        {
+            get { return _fontFamily; }
+        }
+
+        public override string Name
+        {
+            get { return _fontFamily.Name; }
+        }
     }
 }

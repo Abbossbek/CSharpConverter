@@ -517,7 +517,7 @@ namespace CSharpConverter.DocxToHtml.Element
             {
                 RemoveComments = true,
                 RemoveContentControls = true,
-                RemoveEndAndFootNotes = true,
+                RemoveEndAndFootNotes = false,
                 RemoveFieldCodes = false,
                 RemoveLastRenderedPageBreak = true,
                 RemovePermissions = true,

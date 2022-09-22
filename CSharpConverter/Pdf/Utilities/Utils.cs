@@ -1,39 +1,88 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.Utilities.Utils
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
 using PdfSharpCore.Drawing;
 using System.Drawing;
-using TheArtOfDev.HtmlRenderer.Adapters.Entities;
+using HtmlRendererCore.Adapters.Entities;
 
-namespace CSharpConverter.Pdf.Utilities
+namespace HtmlRendererCore.PdfSharp.Utilities
 {
-  internal static class Utils
-  {
-    public static RPoint Convert(XPoint p) => new RPoint(((XPoint) p).X, ((XPoint) p).Y);
-
-    public static XPoint[] Convert(RPoint[] points)
+    /// <summary>
+    /// Utilities for converting WinForms entities to HtmlRenderer core entities.
+    /// </summary>
+    internal static class Utils
     {
-      XPoint[] xpointArray = new XPoint[points.Length];
-      for (int index = 0; index < points.Length; ++index)
-        xpointArray[index] = Utils.Convert(points[index]);
-      return xpointArray;
+        /// <summary>
+        /// Convert from WinForms point to core point.
+        /// </summary>
+        public static RPoint Convert(XPoint p)
+        {
+            return new RPoint(p.X, p.Y);
+        }
+
+        /// <summary>
+        /// Convert from WinForms point to core point.
+        /// </summary>
+        public static XPoint[] Convert(RPoint[] points)
+        {
+            XPoint[] myPoints = new XPoint[points.Length];
+            for (int i = 0; i < points.Length; i++)
+                myPoints[i] = Convert(points[i]);
+            return myPoints;
+        }
+
+        /// <summary>
+        /// Convert from core point to WinForms point.
+        /// </summary>
+        public static XPoint Convert(RPoint p)
+        {
+            return new XPoint(p.X, p.Y);
+        }
+
+        /// <summary>
+        /// Convert from WinForms size to core size.
+        /// </summary>
+        public static RSize Convert(XSize s)
+        {
+            return new RSize(s.Width, s.Height);
+        }
+
+        /// <summary>
+        /// Convert from core size to WinForms size.
+        /// </summary>
+        public static XSize Convert(RSize s)
+        {
+            return new XSize(s.Width, s.Height);
+        }
+
+        /// <summary>
+        /// Convert from WinForms rectangle to core rectangle.
+        /// </summary>
+        public static RRect Convert(XRect r)
+        {
+            return new RRect(r.X, r.Y, r.Width, r.Height);
+        }
+
+        /// <summary>
+        /// Convert from core rectangle to WinForms rectangle.
+        /// </summary>
+        public static XRect Convert(RRect r)
+        {
+            return new XRect(r.X, r.Y, r.Width, r.Height);
+        }
+
+        /// <summary>
+        /// Convert from core color to WinForms color.
+        /// </summary>
+        public static XColor Convert(RColor c)
+        {
+            return XColor.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        /// <summary>
+        /// Convert from  color to WinForms color.
+        /// </summary>
+        public static RColor Convert(Color c)
+        {
+            return RColor.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
     }
-
-    public static XPoint Convert(RPoint p) => new XPoint(((RPoint)  p).X, ((RPoint)  p).Y);
-
-    public static RSize Convert(XSize s) => new RSize(((XSize)  s).Width, ((XSize)  s).Height);
-
-    public static XSize Convert(RSize s) => new XSize(((RSize)  s).Width, ((RSize)  s).Height);
-
-    public static RRect Convert(XRect r) => new RRect(((XRect)  r).X, ((XRect)  r).Y, ((XRect)  r).Width, ((XRect)  r).Height);
-
-    public static XRect Convert(RRect r) => new XRect(((RRect)  r).X, ((RRect)  r).Y, ((RRect)  r).Width, ((RRect)  r).Height);
-
-    public static XColor Convert(RColor c) => XColor.FromArgb((int) ((RColor)  c).A, (int) ((RColor)  c).R, (int) ((RColor)  c).G, (int) ((RColor)  c).B);
-
-    public static RColor Convert(Color c) => RColor.FromArgb((int) c.A, (int) c.R, (int) c.G, (int) c.B);
-  }
 }

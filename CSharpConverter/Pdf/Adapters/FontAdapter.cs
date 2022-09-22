@@ -1,50 +1,93 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.Adapters.FontAdapter
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
+﻿using HtmlRendererCore.Adapters;
 using PdfSharpCore.Drawing;
 
-using TheArtOfDev.HtmlRenderer.Adapters;
-using TheArtOfDev.HtmlRenderer.Adapters.Entities;
-
-namespace CSharpConverter.Pdf.Adapters
+namespace HtmlRendererCore.PdfSharp.Adapters
 {
-    internal sealed class FontAdapter : IRFont
+    /// <summary>
+    /// Adapter for WinForms Font object for core.
+    /// </summary>
+    internal sealed class FontAdapter : RFont
     {
+        #region Fields and Consts
+
+        /// <summary>
+        /// the underline win-forms font.
+        /// </summary>
         private readonly XFont _font;
-        private double _underlineOffset = -1.0;
-        private double _height = -1.0;
-        private double _whitespaceWidth = -1.0;
 
-        public FontAdapter(XFont font) => this._font = font;
+        /// <summary>
+        /// the vertical offset of the font underline location from the top of the font.
+        /// </summary>
+        private double _underlineOffset = -1;
 
-        public XFont Font => this._font;
+        /// <summary>
+        /// Cached font height.
+        /// </summary>
+        private double _height = -1;
 
-        public double UnderlineOffset => this._underlineOffset;
+        /// <summary>
+        /// Cached font whitespace width.
+        /// </summary>
+        private double _whitespaceWidth = -1;
+
+        #endregion
 
 
-        public double FontHeight => this._height;
-
-        public double FontSize => _font.Size;
-
-        public double FontLeftPadding => this._height / 6.0;
-
-        public double GetWhitespaceWidth(RGraphics graphics)
+        /// <summary>
+        /// Init.
+        /// </summary>
+        public FontAdapter(XFont font)
         {
-            if (this._whitespaceWidth < 0.0)
-            {
-                RSize rsize = graphics.MeasureString(" ", (IRFont)this);
-                this._whitespaceWidth = ((RSize)rsize).Width;
-            }
-            return this._whitespaceWidth;
+            _font = font;
         }
 
+        /// <summary>
+        /// the underline win-forms font.
+        /// </summary>
+        public XFont Font
+        {
+            get { return _font; }
+        }
+
+        public override double Size
+        {
+            get { return _font.Size; }
+        }
+
+        public override double UnderlineOffset
+        {
+            get { return _underlineOffset; }
+        }
+
+        public override double Height
+        {
+            get { return _height; }
+        }
+
+        public override double LeftPadding
+        {
+            get { return _height / 6f; }
+        }
+
+
+        public override double GetWhitespaceWidth(RGraphics graphics)
+        {
+            if (_whitespaceWidth < 0)
+            {
+                _whitespaceWidth = graphics.MeasureString(" ", this).Width;
+            }
+            return _whitespaceWidth;
+        }
+
+        /// <summary>
+        /// Set font metrics to be cached for the font for future use.
+        /// </summary>
+        /// <param name="height">the full height of the font</param>
+        /// <param name="underlineOffset">the vertical offset of the font underline location from the top of the font.</param>
         internal void SetMetrics(int height, int underlineOffset)
         {
-            this._height = (double)height;
-            this._underlineOffset = (double)underlineOffset;
+            _height = height;
+            _underlineOffset = underlineOffset;
         }
     }
 }

@@ -1,144 +1,228 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.PdfGenerator
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
-using PdfSharpCore;
+﻿using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System;
-using System.Collections.Generic;
-using TheArtOfDev.HtmlRenderer.Adapters;
-using TheArtOfDev.HtmlRenderer.Core;
-using TheArtOfDev.HtmlRenderer.Core.Entities;
-using TheArtOfDev.HtmlRenderer.Core.Utils;
-using CSharpConverter.Pdf.Adapters;
+using HtmlRendererCore.Core;
+using HtmlRendererCore.Core.Entities;
+using HtmlRendererCore.Core.Utils;
+using HtmlRendererCore.PdfSharp.Adapters;
 
-namespace CSharpConverter.Pdf
+namespace HtmlRendererCore.PdfSharp
 {
     public static class PdfGenerator
     {
+        /// <summary>
+        /// Adds a font mapping from <paramref name="fromFamily"/> to <paramref name="toFamily"/> iff the <paramref name="fromFamily"/> is not found.<br/>
+        /// When the <paramref name="fromFamily"/> font is used in rendered html and is not found in existing 
+        /// fonts (installed or added) it will be replaced by <paramref name="toFamily"/>.<br/>
+        /// </summary>
+        /// <remarks>
+        /// This fonts mapping can be used as a fallback in case the requested font is not installed in the client system.
+        /// </remarks>
+        /// <param name="fromFamily">the font family to replace</param>
+        /// <param name="toFamily">the font family to replace with</param>
         public static void AddFontFamilyMapping(string fromFamily, string toFamily)
         {
             ArgChecker.AssertArgNotNullOrEmpty(fromFamily, "fromFamily");
             ArgChecker.AssertArgNotNullOrEmpty(toFamily, "toFamily");
+
             PdfSharpAdapter.Instance.AddFontFamilyMapping(fromFamily, toFamily);
         }
 
+        /// <summary>
+        /// Parse the given stylesheet to <see cref="CssData"/> object.<br/>
+        /// If <paramref name="combineWithDefault"/> is true the parsed css blocks are added to the 
+        /// default css data (as defined by W3), merged if class name already exists. If false only the data in the given stylesheet is returned.
+        /// </summary>
+        /// <seealso cref="http://www.w3.org/TR/CSS21/sample.html"/>
+        /// <param name="stylesheet">the stylesheet source to parse</param>
+        /// <param name="combineWithDefault">true - combine the parsed css data with default css data, false - return only the parsed css data</param>
+        /// <returns>the parsed css data</returns>
         public static CssData ParseStyleSheet(string stylesheet, bool combineWithDefault = true)
         {
             return CssData.Parse(PdfSharpAdapter.Instance, stylesheet, combineWithDefault);
         }
 
-        public static PdfDocument GeneratePdf(string html, PageSize pageSize, int margin = 20, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
-        {
-            PdfGenerateConfig pdfGenerateConfig = new PdfGenerateConfig();
-            pdfGenerateConfig.PageSize = pageSize;
-            pdfGenerateConfig.SetMargins(margin);
-            return GeneratePdf(html, pdfGenerateConfig, cssData, stylesheetLoad, imageLoad);
-        }
+        /// <summary>
+        /// Create PDF document from given HTML.<br/>
+        /// </summary>
+        /// <param name="html">HTML source to create PDF from</param>
+        /// <param name="pageSize">the page size to use for each page in the generated pdf </param>
+        /// <param name="margin">the margin to use between the HTML and the edges of each page</param>
+        /// <param name="cssData">optional: the style to use for html rendering (default - use W3 default style)</param>
+        /// <param name="stylesheetLoad">optional: can be used to overwrite stylesheet resolution logic</param>
+        /// <param name="imageLoad">optional: can be used to overwrite image resolution logic</param>
+        /// <returns>the generated image of the html</returns>
         public static PdfDocument GeneratePdf(string html, double width, double height, int margin = 20, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
         {
-            PdfGenerateConfig pdfGenerateConfig = new PdfGenerateConfig();
-            pdfGenerateConfig.ManualPageSize = new XSize(width, height);
-            pdfGenerateConfig.SetMargins(margin);
-            return GeneratePdf(html, pdfGenerateConfig, cssData, stylesheetLoad, imageLoad);
+            var config = new PdfGenerateConfig();
+            config.ManualPageSize = new XSize(width, height);
+            config.SetMargins(margin);
+            return GeneratePdf(html, config, cssData, stylesheetLoad, imageLoad);
+        }
+        public static PdfDocument GeneratePdf(string html, PageSize pageSize, int margin = 20, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
+        {
+            var config = new PdfGenerateConfig();
+            config.PageSize = pageSize;
+            config.SetMargins(margin);
+            return GeneratePdf(html, config, cssData, stylesheetLoad, imageLoad);
         }
 
+        /// <summary>
+        /// Create PDF document from given HTML.<br/>
+        /// </summary>
+        /// <param name="html">HTML source to create PDF from</param>
+        /// <param name="config">the configuration to use for the PDF generation (page size/page orientation/margins/etc.)</param>
+        /// <param name="cssData">optional: the style to use for html rendering (default - use W3 default style)</param>
+        /// <param name="stylesheetLoad">optional: can be used to overwrite stylesheet resolution logic</param>
+        /// <param name="imageLoad">optional: can be used to overwrite image resolution logic</param>
+        /// <returns>the generated image of the html</returns>
         public static PdfDocument GeneratePdf(string html, PdfGenerateConfig config, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
         {
-            PdfDocument pdfDocument = new PdfDocument();
-            AddPdfPages(pdfDocument, html, config, cssData, stylesheetLoad, imageLoad);
-            return pdfDocument;
+            // create PDF document to render the HTML into
+            var document = new PdfDocument();
+
+            // add rendered PDF pages to document
+            AddPdfPages(document, html, config, cssData, stylesheetLoad, imageLoad);
+
+            return document;
         }
 
+        /// <summary>
+        /// Create PDF pages from given HTML and appends them to the provided PDF document.<br/>
+        /// </summary>
+        /// <param name="document">PDF document to append pages to</param>
+        /// <param name="html">HTML source to create PDF from</param>
+        /// <param name="pageSize">the page size to use for each page in the generated pdf </param>
+        /// <param name="margin">the margin to use between the HTML and the edges of each page</param>
+        /// <param name="cssData">optional: the style to use for html rendering (default - use W3 default style)</param>
+        /// <param name="stylesheetLoad">optional: can be used to overwrite stylesheet resolution logic</param>
+        /// <param name="imageLoad">optional: can be used to overwrite image resolution logic</param>
+        /// <returns>the generated image of the html</returns>
         public static void AddPdfPages(PdfDocument document, string html, PageSize pageSize, int margin = 20, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
         {
-            PdfGenerateConfig pdfGenerateConfig = new PdfGenerateConfig();
-            pdfGenerateConfig.PageSize = pageSize;
-            pdfGenerateConfig.SetMargins(margin);
-            AddPdfPages(document, html, pdfGenerateConfig, cssData, stylesheetLoad, imageLoad);
+            var config = new PdfGenerateConfig();
+            config.PageSize = pageSize;
+            config.SetMargins(margin);
+            AddPdfPages(document, html, config, cssData, stylesheetLoad, imageLoad);
         }
 
+        /// <summary>
+        /// Create PDF pages from given HTML and appends them to the provided PDF document.<br/>
+        /// </summary>
+        /// <param name="document">PDF document to append pages to</param>
+        /// <param name="html">HTML source to create PDF from</param>
+        /// <param name="config">the configuration to use for the PDF generation (page size/page orientation/margins/etc.)</param>
+        /// <param name="cssData">optional: the style to use for html rendering (default - use W3 default style)</param>
+        /// <param name="stylesheetLoad">optional: can be used to overwrite stylesheet resolution logic</param>
+        /// <param name="imageLoad">optional: can be used to overwrite image resolution logic</param>
+        /// <returns>the generated image of the html</returns>
         public static void AddPdfPages(PdfDocument document, string html, PdfGenerateConfig config, CssData cssData = null, EventHandler<HtmlStylesheetLoadEventArgs> stylesheetLoad = null, EventHandler<HtmlImageLoadEventArgs> imageLoad = null)
         {
-            XSize orgPageSize = ((config.PageSize == PageSize.Undefined) ? config.ManualPageSize : PageSizeConverter.ToSize(config.PageSize));
+            XSize orgPageSize;
+            // get the size of each page to layout the HTML in
+            if (config.PageSize != PageSize.Undefined)
+                orgPageSize = PageSizeConverter.ToSize(config.PageSize);
+            else
+                orgPageSize = config.ManualPageSize;
+
             if (config.PageOrientation == PageOrientation.Landscape)
             {
+                // invert pagesize for landscape
                 orgPageSize = new XSize(orgPageSize.Height, orgPageSize.Width);
             }
 
-            XSize xSize = new XSize(orgPageSize.Width - (double)config.MarginLeft - (double)config.MarginRight, orgPageSize.Height - (double)config.MarginTop - (double)config.MarginBottom);
-            if (string.IsNullOrEmpty(html))
-            {
-                return;
-            }
+            var pageSize = new XSize(orgPageSize.Width - config.MarginLeft - config.MarginRight, orgPageSize.Height - config.MarginTop - config.MarginBottom);
 
-            using HtmlContainer htmlContainer = new HtmlContainer();
-            if (stylesheetLoad != null)
+            if (!string.IsNullOrEmpty(html))
             {
-                htmlContainer.StylesheetLoad += stylesheetLoad;
-            }
+                using (var container = new HtmlContainer())
+                {
+                    if (stylesheetLoad != null)
+                        container.StylesheetLoad += stylesheetLoad;
+                    if (imageLoad != null)
+                        container.ImageLoad += imageLoad;
 
-            if (imageLoad != null)
-            {
-                htmlContainer.ImageLoad += imageLoad;
-            }
+                    container.Location = new XPoint(config.MarginLeft, config.MarginTop);
+                    container.MaxSize = new XSize(pageSize.Width, 0);
+                    container.SetHtml(html, cssData);
+                    container.PageSize = pageSize;
+                    container.MarginBottom = config.MarginBottom;
+                    container.MarginLeft = config.MarginLeft;
+                    container.MarginRight = config.MarginRight;
+                    container.MarginTop = config.MarginTop;
 
-            htmlContainer.Location = new XPoint(config.MarginLeft, config.MarginTop);
-            htmlContainer.MaxSize = new XSize(xSize.Width, 0.0);
-            htmlContainer.SetHtml(html, cssData);
-            htmlContainer.PageSize = xSize;
-            htmlContainer.MarginBottom = config.MarginBottom;
-            htmlContainer.MarginLeft = config.MarginLeft;
-            htmlContainer.MarginRight = config.MarginRight;
-            htmlContainer.MarginTop = config.MarginTop;
-            using (XGraphics g = XGraphics.CreateMeasureContext(xSize, XGraphicsUnit.Point, XPageDirection.Downwards))
-            {
-                htmlContainer.PerformLayout(g);
-            }
+                    // layout the HTML with the page width restriction to know how many pages are required
+                    using (var measure = XGraphics.CreateMeasureContext(pageSize, XGraphicsUnit.Point, XPageDirection.Downwards))
+                    {
+                        container.PerformLayout(measure);
+                    }
 
-            for (double num = 0.0; num > 0.0 - htmlContainer.ActualSize.Height; num -= xSize.Height)
-            {
-                PdfPage pdfPage = document.AddPage();
-                pdfPage.Height = orgPageSize.Height;
-                pdfPage.Width = orgPageSize.Width;
-                using XGraphics xGraphics = XGraphics.FromPdfPage(pdfPage);
-                xGraphics.IntersectClip(new XRect(0.0, 0.0, pdfPage.Width, pdfPage.Height));
-                htmlContainer.ScrollOffset = new XPoint(0.0, num);
-                htmlContainer.PerformPaint(xGraphics);
-            }
+                    // while there is un-rendered HTML, create another PDF page and render with proper offset for the next page
+                    double scrollOffset = 0;
+                    while (scrollOffset > -container.ActualSize.Height)
+                    {
+                        var page = document.AddPage();
+                        page.Height = orgPageSize.Height;
+                        page.Width = orgPageSize.Width;
 
-            HandleLinks(document, htmlContainer, orgPageSize, xSize);
+                        using (var g = XGraphics.FromPdfPage(page))
+                        {
+                            //g.IntersectClip(new XRect(config.MarginLeft, config.MarginTop, pageSize.Width, pageSize.Height));
+                            g.IntersectClip(new XRect(0, 0, page.Width, page.Height));
+
+                            container.ScrollOffset = new XPoint(0, scrollOffset);
+                            container.PerformPaint(g);
+                        }
+                        scrollOffset -= pageSize.Height;
+                    }
+
+                    // add web links and anchors
+                    HandleLinks(document, container, orgPageSize, pageSize);
+                }
+            }
         }
 
+
+
+        #region Private/Protected methods
+
+        /// <summary>
+        /// Handle HTML links by create PDF Documents link either to external URL or to another page in the document.
+        /// </summary>
         private static void HandleLinks(PdfDocument document, HtmlContainer container, XSize orgPageSize, XSize pageSize)
         {
-            foreach (LinkElementData<XRect> link in container.GetLinks())
+            foreach (var link in container.GetLinks())
             {
-                for (int i = (int)(link.Rectangle.Top / pageSize.Height); i < document.Pages.Count && pageSize.Height * (double)i < link.Rectangle.Bottom; i++)
+                int i = (int)(link.Rectangle.Top / pageSize.Height);
+                for (; i < document.Pages.Count && pageSize.Height * i < link.Rectangle.Bottom; i++)
                 {
-                    double num = pageSize.Height * (double)i;
-                    XRect rect = new XRect(link.Rectangle.Left, orgPageSize.Height - (link.Rectangle.Height + link.Rectangle.Top - num), link.Rectangle.Width, link.Rectangle.Height);
+                    var offset = pageSize.Height * i;
+
+                    // fucking position is from the bottom of the page
+                    var xRect = new XRect(link.Rectangle.Left, orgPageSize.Height - (link.Rectangle.Height + link.Rectangle.Top - offset), link.Rectangle.Width, link.Rectangle.Height);
+
                     if (link.IsAnchor)
                     {
-                        XRect? elementRectangle = container.GetElementRectangle(link.AnchorId);
-                        if (elementRectangle.HasValue)
+                        // create link to another page in the document
+                        var anchorRect = container.GetElementRectangle(link.AnchorId);
+                        if (anchorRect.HasValue)
                         {
-                            int num2 = (int)(elementRectangle.Value.Top / pageSize.Height);
-                            if (i != num2)
-                            {
-                                document.Pages[i].AddDocumentLink(new PdfRectangle(rect), num2);
-                            }
+                            // document links to the same page as the link is not allowed
+                            int anchorPageIdx = (int)(anchorRect.Value.Top / pageSize.Height);
+                            if (i != anchorPageIdx)
+                                document.Pages[i].AddDocumentLink(new PdfRectangle(xRect), anchorPageIdx);
                         }
                     }
                     else
                     {
-                        document.Pages[i].AddWebLink(new PdfRectangle(rect), link.Href);
+                        // create link to URL
+                        document.Pages[i].AddWebLink(new PdfRectangle(xRect), link.Href);
                     }
                 }
             }
         }
+
+        #endregion
     }
 }

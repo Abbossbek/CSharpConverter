@@ -1,26 +1,47 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.Adapters.ImageAdapter
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
-
+﻿using HtmlRendererCore.Adapters;
 using PdfSharpCore.Drawing;
-using TheArtOfDev.HtmlRenderer.Adapters;
 
-namespace CSharpConverter.Pdf.Adapters
+namespace HtmlRendererCore.PdfSharp.Adapters
 {
-  internal sealed class ImageAdapter : IRImage
-  {
-    private readonly XImage _image;
+    /// <summary>
+    /// Adapter for WinForms Image object for core.
+    /// </summary>
+    internal sealed class ImageAdapter : RImage
+    {
+        /// <summary>
+        /// the underline win-forms image.
+        /// </summary>
+        private readonly XImage _image;
 
-    public ImageAdapter(XImage image) => this._image = image;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public ImageAdapter(XImage image)
+        {
+            _image = image;
+        }
 
-    public XImage Image => this._image;
+        /// <summary>
+        /// the underline win-forms image.
+        /// </summary>
+        public XImage Image
+        {
+            get { return _image; }
+        }
 
-    public double ImageWidth => (double) this._image.PixelWidth;
+        public override double Width
+        {
+            get { return _image.PixelWidth; }
+        }
 
-    public double ImageHeight => (double) this._image.PixelHeight;
+        public override double Height
+        {
+            get { return _image.PixelHeight; }
+        }
 
-    public void Dispose() => this._image.Dispose();
-  }
+        public override void Dispose()
+        {
+            _image.Dispose();
+        }
+    }
 }

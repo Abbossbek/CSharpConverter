@@ -1,25 +1,37 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: VetCV.HtmlRendererCore.PdfSharpCore.Adapters.BrushAdapter
-// Assembly: HtmlRendererCore.PdfSharpCore, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null
-// MVID: 5FA72F8E-2C1A-42B6-AF29-CEB7845EFBE4
-// Assembly location: C:\Users\Abbosbek\.nuget\packages\htmlrenderercore.pdfsharpcore\1.0.1\lib\netcoreapp2.0\HtmlRendererCore.PdfSharpCore.dll
+﻿using System;
+using HtmlRendererCore.Adapters;
+using PdfSharpCore.Drawing;
 
-using System;
-
-using TheArtOfDev.HtmlRenderer.Adapters;
-
-namespace CSharpConverter.Pdf.Adapters
+namespace HtmlRendererCore.PdfSharp.Adapters
 {
-    internal sealed class BrushAdapter : IRBrush
+    /// <summary>
+    /// Adapter for WinForms brushes objects for core.
+    /// </summary>
+    internal sealed class BrushAdapter : RBrush
     {
-        private readonly object _brush;
+        /// <summary>
+        /// The actual PdfSharp brush instance.<br/>
+        /// Should be <see cref="XBrush"/> but there is some fucking issue inheriting from it =/
+        /// </summary>
+        private readonly Object _brush;
 
-        public BrushAdapter(object brush) => this._brush = brush;
-
-        public object Brush => this._brush;
-
-        public void Dispose()
+        /// <summary>
+        /// Init.
+        /// </summary>
+        public BrushAdapter(Object brush)
         {
+            _brush = brush;
         }
+
+        /// <summary>
+        /// The actual WinForms brush instance.
+        /// </summary>
+        public Object Brush
+        {
+            get { return _brush; }
+        }
+
+        public override void Dispose()
+        { }
     }
 }
